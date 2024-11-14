@@ -1,0 +1,706 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model action {
+  id         Int              @id @default(autoincrement())
+  position   player_position?
+  type       point_action?
+  point      Int?             @db.SmallInt
+  created_at DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?        @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime?        @db.Timestamptz(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+  name       String?          @db.VarChar(255)
+}
+
+model banner {
+  id          Int          @id(map: "advertisement_pkey") @default(autoincrement())
+  start_date  DateTime     @db.Date
+  end_date    DateTime     @db.Date
+  price       Int
+  is_active   Boolean      @default(false)
+  link        String?      @db.VarChar(255)
+  content_url String?      @db.VarChar(255)
+  name        String?      @db.VarChar(255)
+  created_at  DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime?    @default(now()) @db.Timestamptz(6)
+  deleted_at  DateTime?    @db.Timestamptz(6)
+  created_by  Int?
+  deleted_by  Int?
+  updated_by  Int?
+  banner_type banner_type?
+  view_count  BigInt?
+}
+
+model banner_view {
+  id         BigInt    @id @default(autoincrement())
+  name       String?   @db.VarChar(255)
+  banner_id  Int
+  views      BigInt?
+  device     String?   @db.VarChar(255)
+  country    String?   @db.VarChar(255)
+  city       String?   @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by Int?
+  deleted_by Int?
+  updated_by Int?
+}
+
+model card {
+  id         Int       @id @default(autoincrement())
+  player_id  Int?
+  card_type  String?   @db.VarChar(10)
+  match_id   Int?
+  name       String?   @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+}
+
+model club {
+  id               Int       @id(map: "_copy_1_copy_1_copy_1_copy_1_copy_1") @default(autoincrement())
+  name             String?   @db.VarChar(255)
+  competition_name String?   @db.VarChar(255)
+  name_ru          String?   @db.VarChar(255)
+  competition_id   Int?
+  club_link        String?   @db.VarChar(255)
+  country_id       Int?
+  native           String?   @db.VarChar(255)
+  form_img         String?   @db.VarChar(255)
+  slug             String?   @db.VarChar(255)
+  region           String?   @db.VarChar(255)
+  trainer          String?   @db.VarChar(255)
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  logo_img         String?   @db.VarChar(255)
+  created_by       Int?
+  updated_by       Int?
+  deleted_by       Int?
+}
+
+model company {
+  id                    Int       @id @default(autoincrement())
+  name                  String?   @db.VarChar(255)
+  location              String?
+  address               String?
+  inn                   String?   @db.VarChar(255)
+  mfo                   String?   @db.VarChar(255)
+  rs                    String?   @db.VarChar(255)
+  logo                  String?   @db.VarChar(255)
+  phone                 String?   @db.VarChar(255)
+  website               String?   @db.VarChar(255)
+  founded               DateTime? @db.Timestamptz(0)
+  expiration_time       DateTime? @db.Timestamptz(6)
+  last_notified         DateTime? @db.Timestamptz(0)
+  telegram_notification Boolean?
+  email_notification    Boolean?
+  sms_notification      Boolean?
+  notification_date     Int?
+  created_at            DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at            DateTime? @db.Timestamptz(6)
+  created_by            Int?
+  updated_by            Int?
+  deleted_by            Int?
+}
+
+model competition {
+  title              String    @db.VarChar(255)
+  counter            String?   @db.VarChar(255)
+  country_id         Int?
+  flag               String?   @db.VarChar(255)
+  id                 Int       @id(map: "_copy_2") @default(autoincrement())
+  name               String?   @db.VarChar(255)
+  name_ru            String?   @db.VarChar(255)
+  slug               String?   @db.VarChar(255)
+  competition_link   String?   @db.VarChar(255)
+  can_register       Boolean?
+  team_count         Int?
+  average_team_point Float?    @db.Real
+  sum_of_team_point  Int?
+  deadline           DateTime? @db.Timestamptz(6)
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at         DateTime? @db.Timestamptz(6)
+  created_by         Int?
+  updated_by         Int?
+  deleted_by         Int?
+}
+
+model country {
+  id         Int       @id(map: "_copy_1_copy_1_copy_1_copy_1") @default(autoincrement())
+  name       String?   @db.VarChar(255)
+  flag_url   String?   @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model match {
+  id               Int           @default(autoincrement())
+  home_club_id     Int?
+  away_club_id     Int?
+  started_date     DateTime?     @db.Timestamptz(6)
+  season_id        Int?
+  postphoned_date  DateTime?     @db.Timestamptz(6)
+  winner_club_id   Int?
+  finished_date    DateTime?     @db.Timestamptz(6)
+  tour_id          Int?
+  name             String?       @db.VarChar(255)
+  home_club_result Int?          @db.SmallInt
+  away_club_result Int?          @db.SmallInt
+  status           match_status?
+  competition_id   Int?
+  created_at       DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime?     @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime?     @db.Timestamptz(6)
+  created_by       Int?
+  updated_by       Int?
+  deleted_by       Int?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model news {
+  id         Int       @default(autoincrement())
+  name       String?   @db.VarChar(255)
+  desc       String?
+  image      String?   @db.VarChar(255)
+  author_id  Int?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+  name_ru    String?   @db.VarChar(255)
+
+  @@ignore
+}
+
+model pay_balance {
+  id             Int             @id @default(autoincrement())
+  name           String?         @db.VarChar(255)
+  user_id        Int?
+  price          Int?
+  system         pay_system_ext?
+  transaction_id String?
+  currency_code  Int?            @db.SmallInt
+  state          Int?            @db.SmallInt
+  updated_time   DateTime?       @db.Timestamptz(6)
+  detail         String?         @db.VarChar(255)
+  created_at     DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?       @default(now()) @db.Timestamptz(6)
+  deleted_at     DateTime?       @db.Timestamptz(6)
+  canceled_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  reason         Int?
+  created_by     Int?
+  updated_by     Int?
+  deleted_by     Int?
+  status         String?         @default("pending")
+  subs_id        Int?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model pay_expense {
+  id               Int               @default(autoincrement())
+  name             String?           @db.VarChar(255)
+  pay_package_id   Int?
+  price            Int?
+  user_id          Int?
+  team_id          Int?
+  pay_package_type pay_package_type?
+  created_at       DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime?         @default(now()) @db.Timestamptz(6)
+  deleted_at       DateTime?         @db.Timestamptz(6)
+  created_by       Int?
+  updated_by       Int?
+  deleted_by       Int?
+  amount           Float?            @db.Real
+  tour_id          Int?
+  competition_id   Int?
+  system           pay_system?
+  transaction_id   Int?
+  currency_code    Int?              @db.SmallInt
+  state            Int?              @db.SmallInt
+  updated_time     DateTime?         @db.Timestamptz(6)
+  detail           String?           @db.VarChar(255)
+  season_id        Int?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model pay_package {
+  id         Int               @default(autoincrement())
+  name_uz    String?           @db.VarChar(255)
+  type       pay_package_type?
+  amount     Float?            @db.Real
+  priority   Int?              @db.SmallInt
+  name_ru    String?           @db.VarChar(255)
+  price      Int?
+  created_at DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?         @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime?         @db.Timestamptz(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model player {
+  id                   Int              @default(autoincrement())
+  name                 String?          @db.VarChar(255)
+  position             player_position? @default(None)
+  price                Float?           @db.Real
+  image                String?          @db.VarChar(255)
+  shirt_number         Int?             @db.SmallInt
+  club_id              Int?
+  point                Int?
+  name_ru              String?          @db.VarChar(255)
+  player_link          String?          @db.VarChar(255)
+  native               String?          @db.VarChar(255)
+  slug                 String?          @db.VarChar(255)
+  competition_id       Int?
+  created_at           DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?        @default(now()) @db.Timestamptz(6)
+  deleted_at           DateTime?        @db.Timestamptz(6)
+  created_by           Int?
+  updated_by           Int?
+  deleted_by           Int?
+  team_count           Int?
+  percentage           Int?
+  is_actualized        Boolean?
+  played_min           Int?             @default(0) @db.SmallInt
+  goal                 Int?             @default(0) @db.SmallInt
+  goal_asist           Int?             @default(0) @db.SmallInt
+  missed_penalty       Int?             @default(0) @db.SmallInt
+  every_2_missed_goals Int?             @default(0) @db.SmallInt
+  yellow_card          Int?             @default(0) @db.SmallInt
+  blocked_penalty      Int?             @default(0)
+  autogoal             Int?             @default(0)
+  red_card             Int?             @default(0)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model player_point {
+  id                   Int       @default(autoincrement())
+  player_id            Int?
+  club_id              Int?
+  competition_id       Int?
+  match_id             Int?
+  tour_id              Int?
+  point                Int?      @default(0)
+  name                 String?   @db.VarChar(255)
+  goal                 Int?      @default(0) @db.SmallInt
+  goal_asist           Int?      @default(0) @db.SmallInt
+  missed_penalty       Int?      @default(0) @db.SmallInt
+  every_2_missed_goals Int?      @default(0) @db.SmallInt
+  is_red_card          Int?      @default(0) @db.SmallInt
+  yellow_card          Int?      @default(0) @db.SmallInt
+  is_lineup            Int?      @default(0) @db.SmallInt
+  is_shutout           Int?      @default(0) @db.SmallInt
+  is_lineup_more_60    Int?      @default(0) @db.SmallInt
+  player_result_id     Int?
+  created_at           DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at           DateTime? @db.Timestamptz(6)
+  created_by           Int?
+  updated_by           Int?
+  deleted_by           Int?
+  season_id            Int?
+  blocked_penalty      Int?      @default(0)
+  autogoal             Int?      @default(0)
+  match_name           String?   @db.VarChar(255)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model player_result {
+  id                   Int              @default(autoincrement())
+  player_id            Int?
+  club_id              Int?
+  played_min           Int?             @default(0) @db.SmallInt
+  position             player_position?
+  competition_id       Int?
+  match_id             Int?
+  tour_id              Int?
+  name                 String?          @db.VarChar(255)
+  is_lineup            Boolean?         @default(false)
+  is_lineup_more_60    Boolean?         @default(false)
+  goal                 Int?             @default(0) @db.SmallInt
+  goal_asist           Int?             @default(0) @db.SmallInt
+  missed_penalty       Int?             @default(0) @db.SmallInt
+  every_2_missed_goals Int?             @default(0) @db.SmallInt
+  yellow_card          Int?             @default(0) @db.SmallInt
+  is_shutout           Boolean?         @default(false)
+  is_red_card          Boolean?         @default(false)
+  season_id            Int?
+  created_at           DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?        @default(now()) @db.Timestamptz(6)
+  deleted_at           DateTime?        @db.Timestamptz(6)
+  created_by           Int?
+  updated_by           Int?
+  deleted_by           Int?
+  blocked_penalty      Int?             @default(0)
+  autogoal             Int?             @default(0)
+  match_name           String?          @db.VarChar(255)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model prize {
+  id             Int         @default(autoincrement())
+  name           String?     @db.VarChar(255)
+  image          String?     @db.VarChar(255)
+  competition_id Int?
+  type           prize_type?
+  order          Int?        @db.SmallInt
+  created_at     DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?   @default(now()) @db.Timestamptz(6)
+  deleted_at     DateTime?   @db.Timestamptz(6)
+  created_by     Int?
+  deleted_by     Int?
+  updated_by     Int?
+  name_ru        String?     @db.VarChar(255)
+
+  @@ignore
+}
+
+model reports {
+  id       BigInt    @id @default(autoincrement())
+  links    String?   @unique(map: "uk_link") @db.VarChar(255)
+  count    Int?
+  all_time Float?
+  report   String?   @db.VarChar(255)
+  day      DateTime? @db.Date
+}
+
+model season {
+  id         Int       @id(map: "_copy_1_copy_1") @default(autoincrement())
+  number     Int?
+  name       String?   @db.VarChar(255)
+  active     Boolean?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+}
+
+model subscribtion {
+  id    Int   @id @default(autoincrement())
+  price Float
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model system_config {
+  id         BigInt       @default(autoincrement())
+  key        config_key
+  value      String?
+  type       config_type?
+  is_list    Boolean?
+  group      String?      @db.VarChar(255)
+  name       String?      @db.VarChar(255)
+  created_at DateTime?    @default(now()) @db.Timestamp(6)
+  updated_at DateTime?    @db.Timestamp(6)
+  deleted_at DateTime?    @db.Timestamp(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model system_language {
+  id         Int       @default(autoincrement())
+  name       String?   @db.VarChar(255)
+  uz         String?
+  ru         String?
+  en         String?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by Int?
+  updated_by Int?
+  deleted_by Int?
+  is_exclude Boolean?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model system_notification {
+  id           Int       @default(autoincrement())
+  user_id      Int?
+  desc         String?
+  read_at      DateTime? @db.Timestamptz(6)
+  name         String?   @db.VarChar(255)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @db.Timestamptz(6)
+  deleted_at   DateTime? @db.Timestamptz(6)
+  created_by   Int?
+  updated_by   Int?
+  deleted_by   Int?
+  is_broadcast Boolean?  @default(false)
+  is_sms       Boolean?  @default(false)
+  is_email     Boolean?  @default(false)
+
+  @@ignore
+}
+
+model users {
+  id       Int    @id @default(autoincrement())
+  name     String
+  lastname String
+}
+
+model usersub {
+  id      Int  @id @default(autoincrement())
+  user_id Int?
+  subs_id Int?
+}
+
+enum System {
+  Payme
+  Click
+  Uzum
+}
+
+enum TransactionStatus {
+  PENDING
+  CREATED
+  PAID
+  CANCELED
+}
+
+enum banner_type {
+  dynamic
+  static
+}
+
+enum config_key {
+  config_image
+  config_images
+  config_file
+  config_files
+  config_enum
+  config_date
+  config_foreign_type
+  config_bool
+  config_string
+  config_int
+  pickPlayer_limit
+  craeteTeam_limit
+  user_balance
+  latest_player
+  sms_confirm_uz
+  sms_confirm_ru
+  useSmsConfirmation
+  isSmsTesting
+  smsTestingText
+  eskiz_token
+  MAILERSEND_API_TOKEN
+}
+
+enum config_type {
+  TextField
+  Dropdown
+  Radio
+  Checkbox
+}
+
+enum customer_type {
+  good
+  core
+  bad
+}
+
+enum forma {
+  A
+  B
+  C
+  D
+  E
+  F
+}
+
+enum formas {
+  f3_5_2
+  f3_4_3
+  f4_3_3
+  f5_3_2
+  f5_4_1
+  f4_4_2
+}
+
+enum gender {
+  male
+  female
+}
+
+enum language {
+  uz
+  ru
+  en
+}
+
+enum match_status {
+  postphoned
+  finished
+  not_started
+  in_process
+}
+
+enum notification_type {
+  sms
+  telegram
+  email
+}
+
+enum pay_method {
+  cash
+  terminal
+  paysys
+  bank
+}
+
+enum pay_package_type {
+  transfer_count
+  team_balance
+  single_club_count
+}
+
+enum pay_system {
+  click
+  payme
+  balance
+  uzum
+}
+
+enum pay_system_ext {
+  click
+  payme
+  uzum
+}
+
+enum player_position {
+  STR
+  MID
+  DEF
+  GOA
+  None
+}
+
+enum point_action {
+  is_lineup
+  is_lineup_more_60
+  goal
+  goal_asist
+  missed_penalty
+  every_2_missed_goals
+  red_card
+  yellow_card
+  is_shutout
+  autogoal
+  blocked_penalty
+}
+
+enum position {
+  GOA
+  DEF
+  MID
+  STR
+}
+
+enum prize_type {
+  gold
+  silver
+  bronze
+}
+
+enum roles {
+  ALL
+  admin
+  manager
+  user
+  guest
+}
+
+enum status_player {
+  injured
+  available
+  booked
+  Questionable
+}
+
+enum t_tables {
+  company
+  customer
+  customer_category
+  expense
+  expense_category
+  product
+  product_category
+  purchase
+  purchase_product
+  rental
+  rental_payment
+  rental_product
+  rental_product_return
+  rental_product_selling
+  selling
+  selling_payment
+  selling_product
+  system_config
+  system_language
+  system_notification
+  system_table
+  user
+  warehouse
+  warehouse_product
+  ALL
+}
+
+enum tour_status {
+  completed
+  not_started
+  not_started_transfer
+  in_process
+}
+
+enum user_event {
+  change_capitan
+  buy_package_transfer
+  buy_package_balance
+  buy_package_one_team
+  player_buy
+  player_sell
+}
